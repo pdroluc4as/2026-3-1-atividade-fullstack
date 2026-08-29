@@ -19,10 +19,23 @@ Pedro Lucas Oliveira de Sousa
 ### Componentes e tecnologias
 
 quais tecnologia utilizdas?
+nestjs  
+nextjs  
+prisma orm  
+sqlite  
+
+
 
 ### Agente de IA
 
-Qual e como utilizou a IA?
+Qual e como utilizou a IA?  
+#### Gemini  
+- Pesquisa
+#### compilot  
+- analise de codigo
+#### stitch  
+- criação das interfaces e prototipos
+
 
 ### Execução do projeto
 
