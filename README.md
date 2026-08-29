@@ -10,8 +10,11 @@
 [A descrição da atividade](atividade.md)
 
 ---
+
 ## Relato da atividade
-Nome do aluno e seu link do linkedin e github
+
+Pedro Lucas Oliveira de Sousa  
+[github](https://github.com/pdroluc4as)
 
 ### Componentes e tecnologias
 
@@ -20,7 +23,6 @@ quais tecnologia utilizdas?
 ### Agente de IA
 
 Qual e como utilizou a IA?
-
 
 ### Execução do projeto
 

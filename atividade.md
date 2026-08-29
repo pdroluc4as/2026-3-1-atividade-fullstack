@@ -6,11 +6,13 @@
 - **Professor**: [L A Minora](https://github.com/leonardo-minora/)
 - **Objetivo**:
   1. Atividade avaliativa para construção de aplicativo com frontend web e backend api restfull
-  
+
 ---
+
 ## Tarefas
-- [ ] Fork desse respositório;
-- [ ] Atualize os textos de README.md com seu nome e links do github e linkedin;
+
+- [x] Fork desse respositório;
+- [x] Atualize os textos de README.md com seu nome e links do github e linkedin;
 - [ ] Decida e atualize em README.md o texto sobre os componentes/tecnologias;
 - [ ] Construa / Defina o protótipo de intergafe gráfica web para o aplicativo;
 - [ ] Construa o frontend web e a backend api restfull;
@@ -19,7 +21,9 @@
 - [ ] Ataulize o texto e o link do víveo em README.md sobre a execução do aplicativo.
 
 ---
+
 ## Observações importantes
+
 - O desenvolvimento pode ser auxiliado por agentes IA (vibe coding, AI-Assisted, AI-Augmented, AI Pair Programmer);
 - Uma interface gráfica foi sugerida pelo Gemini e esta disponível em [diatinf-x.jpg](diatinf-x.jpg);
 - A referência para a paleta de cores e os demais itens da identidade visual pode/deve ser a [identidade visual da DIATINF](https://diatinf.ifrn.edu.br/identidade-visual/) ou [Infoweb](https://diatinf.ifrn.edu.br/wp-content/uploads/2024/03/MIV-Infoweb.pdf);
@@ -29,7 +33,9 @@
 - A pasta (diretório) do backend será `/api`.
 
 ---
+
 ## Características do projeto
+
 - MOBILE FIRST!!!
 - O projeto será uma replica simplificada do x;
 - O titulo da aplicacao diatinf x;
@@ -44,6 +50,7 @@
 - Os perfis são sempre públicos.
 
 **Adicionais**
+
 - Criar um novo usuário somente com login no suap, ver exemplos [html+js](https://github.com/ifrn-oficial/cliente_suap_javascript) e [django](https://github.com/ifrn-oficial/cliente_suap_django);
 - Publicar frontend e backend em servidor de aplicação, como o [vercel](https://vercel.com/) e [netlify](https://app.netlify.com/);
 - Usar postgresql ou outro gerenciador de banco de dados no lugar de sqlite3.
