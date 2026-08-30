@@ -21,10 +21,8 @@ Pedro Lucas Oliveira de Sousa
 quais tecnologia utilizdas?
 nestjs  
 nextjs  
-prisma orm  
+drizzle ORM  
 sqlite  
-
-
 
 ### Agente de IA
 

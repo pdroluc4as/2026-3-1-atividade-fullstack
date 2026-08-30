@@ -11,11 +11,15 @@ export class AppService {
     return 'Hello World!';
   }
 
+  metodoPost(): string {
+    return "Metodo post.";
+  }
+
   async getUsers() {
     return this.db.select().from(usersTable).all();
   }
 
   async getUserByEmail(email: string) {
-    return this.db.select().from(usersTable).where(eq(usersTable.email, email)).get();
+    return this.db.select().from(usersTable).where(eq(usersTable.username, email)).get();
   }
 }
