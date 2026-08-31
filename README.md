@@ -18,22 +18,28 @@ Pedro Lucas Oliveira de Sousa
 
 ### Componentes e tecnologias
 
-quais tecnologia utilizdas?
-nestjs  
-nextjs  
+quais tecnologia utilizdas?  
+backend: nestjs  
+frontend: nextjs  
 drizzle ORM  
 sqlite  
+API de imagens DiceBear
 
 ### Agente de IA
 
-Qual e como utilizou a IA?  
-#### Gemini  
-- Pesquisa
-#### compilot  
-- analise de codigo
-#### stitch  
-- criação das interfaces e prototipos
+Qual e como utilizou a IA?
 
+#### Gemini
+
+- Pesquisa e recomendação de codigo
+
+#### compilot
+
+- escrita, analise e automação de codigo
+
+#### stitch
+
+- criação das interfaces e prototipos
 
 ### Execução do projeto
 
