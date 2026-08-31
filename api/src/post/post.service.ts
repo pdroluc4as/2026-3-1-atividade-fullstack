@@ -15,7 +15,7 @@ export class PostService {
     return this.db.select().from(postsTable).where(eq(postsTable.id, id)).get();
   }
 
-  async create(data: { authorId: number; content: string }) {
+  async create(data: { authorId: number; title: string; content: string }) {
     return this.db
       .insert(postsTable)
       .values({
@@ -25,7 +25,7 @@ export class PostService {
       .run();
   }
 
-  async update(id: number, data: { content: string }) {
+  async update(id: number, data: { title?: string; content?: string }) {
     return this.db
       .update(postsTable)
       .set({

@@ -7,6 +7,7 @@ export const usersTable = sqliteTable("users_table", {
   passwordHash: text("password_hash").notNull(),
   fullName: text("full_name").notNull(),
   bio: text("bio"),
+  avatarUrl: text("avatar_url").notNull(),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
 });
 
@@ -15,6 +16,7 @@ export const postsTable = sqliteTable("posts_table", {
   authorId: integer("author_id")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
   content: text("content").notNull(),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
 });

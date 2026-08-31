@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class UpdateCommentDto {
@@ -7,6 +8,6 @@ export class UpdateCommentDto {
   content?: string;
 
   @IsOptional()
-  @IsString({ message: 'O comentário pai deve ser um número válido' })
+  @Type(() => Number)
   parentCommentId?: number | null;
 }

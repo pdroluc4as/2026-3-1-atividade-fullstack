@@ -13,17 +13,49 @@ async function initializeDatabase(db: ReturnType<typeof drizzle>) {
       password_hash TEXT NOT NULL,
       full_name TEXT NOT NULL,
       bio TEXT,
+      avatar_url TEXT,
       created_at INTEGER NOT NULL
     );
   `);
+
+  const tableInfo = await db.all(sql`PRAGMA table_info(users_table);`);
+  const hasAvatarColumn = Array.isArray(tableInfo)
+    ? tableInfo.some((column: any) => column.name === 'avatar_url')
+    : false;
+
+  if (!hasAvatarColumn) {
+    await db.run(sql`ALTER TABLE users_table ADD COLUMN avatar_url TEXT;`);
+  }
+
+  await db.run(sql`
+    UPDATE users_table
+    SET avatar_url = 'https://api.dicebear.com/9.x/bottts/svg?seed=' || username || '-' || CAST(id AS TEXT)
+    WHERE avatar_url IS NULL;
+  `);
+
+  const postsTableInfo = await db.all(sql`PRAGMA table_info(posts_table);`);
+  const hasTitleColumn = Array.isArray(postsTableInfo)
+    ? postsTableInfo.some((column: any) => column.name === 'title')
+    : false;
+
+  if (!hasTitleColumn) {
+    await db.run(sql`ALTER TABLE posts_table ADD COLUMN title TEXT;`);
+  }
 
   await db.run(sql`
     CREATE TABLE IF NOT EXISTS posts_table (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       author_id INTEGER NOT NULL REFERENCES users_table(id) ON DELETE CASCADE,
+      title TEXT NOT NULL,
       content TEXT NOT NULL,
       created_at INTEGER NOT NULL
     );
+  `);
+
+  await db.run(sql`
+    UPDATE posts_table
+    SET title = 'Sem título'
+    WHERE title IS NULL;
   `);
 
   await db.run(sql`

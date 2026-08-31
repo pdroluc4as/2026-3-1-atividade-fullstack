@@ -13,8 +13,17 @@ export class CommentController {
   ) {}
 
   @Get()
-  findAll(@Query('postId', ParseIntPipe) postId?: number) {
-    return this.commentService.findByPost(postId ?? 0);
+  findAll(@Query('postId') postId?: string) {
+    if (postId === undefined || postId === null || postId === '') {
+      return this.commentService.findAll();
+    }
+
+    const parsedPostId = Number(postId);
+    if (Number.isNaN(parsedPostId)) {
+      throw new ForbiddenException('O id do post deve ser um número válido');
+    }
+
+    return this.commentService.findByPost(parsedPostId);
   }
 
   @Get(':id')
