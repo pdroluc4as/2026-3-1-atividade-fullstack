@@ -1,4 +1,4 @@
-import { defineRelations } from "drizzle-orm";
+import { defineRelations, InferSelectModel } from "drizzle-orm";
 import { integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users_table", {
@@ -52,34 +52,42 @@ export const postRatingsTable = sqliteTable(
   ],
 );
 
-export const usersRelations = defineRelations(
+export type User = InferSelectModel<typeof usersTable>;
+export type Post = InferSelectModel<typeof postsTable>;
+export type Comment = InferSelectModel<typeof commentsTable>;
+export type PostRating = InferSelectModel<typeof postRatingsTable>;
+
+const relations = defineRelations(
   { usersTable, postsTable, commentsTable, postRatingsTable },
   (helpers) => ({
     usersTable: {
-      posts: helpers.many.postsTable(),
-      comments: helpers.many.commentsTable(),
-      postRatings: helpers.many.postRatingsTable(),
+      posts: helpers.many.postsTable({
+        from: [helpers.usersTable.id],
+        to: [helpers.postsTable.authorId],
+      }),
+      comments: helpers.many.commentsTable({
+        from: [helpers.usersTable.id],
+        to: [helpers.commentsTable.authorId],
+      }),
+      postRatings: helpers.many.postRatingsTable({
+        from: [helpers.usersTable.id],
+        to: [helpers.postRatingsTable.userId],
+      }),
     },
-  }),
-);
-
-export const postsRelations = defineRelations(
-  { usersTable, postsTable, commentsTable, postRatingsTable },
-  (helpers) => ({
     postsTable: {
       author: helpers.one.usersTable({
         from: [helpers.postsTable.authorId],
         to: [helpers.usersTable.id],
       }),
-      comments: helpers.many.commentsTable(),
-      ratings: helpers.many.postRatingsTable(),
+      comments: helpers.many.commentsTable({
+        from: [helpers.postsTable.id],
+        to: [helpers.commentsTable.postId],
+      }),
+      ratings: helpers.many.postRatingsTable({
+        from: [helpers.postsTable.id],
+        to: [helpers.postRatingsTable.postId],
+      }),
     },
-  }),
-);
-
-export const commentsRelations = defineRelations(
-  { usersTable, postsTable, commentsTable },
-  (helpers) => ({
     commentsTable: {
       post: helpers.one.postsTable({
         from: [helpers.commentsTable.postId],
@@ -98,12 +106,6 @@ export const commentsRelations = defineRelations(
         to: [helpers.commentsTable.parentCommentId],
       }),
     },
-  }),
-);
-
-export const postRatingsRelations = defineRelations(
-  { usersTable, postsTable, postRatingsTable },
-  (helpers) => ({
     postRatingsTable: {
       post: helpers.one.postsTable({
         from: [helpers.postRatingsTable.postId],
@@ -116,3 +118,8 @@ export const postRatingsRelations = defineRelations(
     },
   }),
 );
+
+export const usersRelations = relations;
+export const postsRelations = relations;
+export const commentsRelations = relations;
+export const postRatingsRelations = relations;
