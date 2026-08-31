@@ -2,11 +2,12 @@ import { Body, Controller, Get, Param, ParseIntPipe, Patch, Req } from '@nestjs/
 import type { Request } from 'express';
 import { UsersService } from './user.service.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
+import {Public} from "../auth/decorators/public.decorator.js"
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UsersService) {}
-
+  @Public()
   @Get()
   findAll() {
     return this.userService.findAll();

@@ -3,11 +3,13 @@ import type { Request } from 'express';
 import { CreatePostDto } from './dto/create-post.dto.js';
 import { UpdatePostDto } from './dto/update-post.dto.js';
 import { PostService } from './post.service.js';
+import {Public} from "../auth/decorators/public.decorator.js"
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @Public()
   @Get()
   findAll() {
     return this.postService.findAll();

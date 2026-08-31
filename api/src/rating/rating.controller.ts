@@ -4,6 +4,7 @@ import { PostService } from '../post/post.service.js';
 import { CreateRatingDto } from './dto/create-rating.dto.js';
 import { UpdateRatingDto } from './dto/update-rating.dto.js';
 import { RatingService } from './rating.service.js';
+import {Public} from "../auth/decorators/public.decorator.js"
 
 @Controller('ratings')
 export class RatingController {
@@ -12,6 +13,7 @@ export class RatingController {
     private readonly postService: PostService,
   ) {}
 
+  @Public()
   @Get('post/:postId')
   findByPost(@Param('postId', ParseIntPipe) postId: number) {
     return this.ratingService.findByPost(postId);

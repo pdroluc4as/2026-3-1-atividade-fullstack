@@ -1,0 +1,18 @@
+{
+  "name": "Meu Monorepo (Next.js + NestJS)",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+  "forwardPorts": [3000, 3001],
+  "portsAttributes": {
+    "3001": {
+      "label": "Backend API",
+      "requireLocalPort": true,
+      "visibility": "public"
+    },
+    "3000": {
+      "label": "Frontend Next.js",
+      "requireLocalPort": true,
+      "visibility": "public"
+    }
+  },
+  "postCreateCommand": "npm install" 
+}

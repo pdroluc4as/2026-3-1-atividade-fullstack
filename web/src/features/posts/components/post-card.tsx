@@ -1,3 +1,6 @@
+"use client"; 
+
+import { useRouter } from "next/navigation"; 
 import Link from "next/link";
 import { MessageSquareText, Star } from "lucide-react";
 
@@ -42,6 +45,8 @@ export function PostCard({
   ratings = [],
   averageRating,
 }: PostCardProps) {
+
+  const router = useRouter();
   const postContent = content ?? description ?? "Sem conteúdo disponível.";
   const detailHref = href ?? (id ? `/posts/${id}` : "/posts");
   const totalRatings = ratings.length;
@@ -54,6 +59,15 @@ export function PostCard({
         : totalRatings
           ? ratings.reduce((sum, item) => sum + Number(item.rating ?? 0), 0) / totalRatings
           : 0;
+
+  function handleNavigation(event: React.MouseEvent<HTMLAnchorElement>) {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+    if (!token) {
+      event.preventDefault(); // Cancela a ida para detailHref
+      router.push("/login");  // Leva o usuário para a página de login
+    }
+  }
 
   return (
     <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
@@ -92,6 +106,7 @@ export function PostCard({
 
         <Link
           href={detailHref}
+          onClick={handleNavigation}
           className="rounded-md bg-secondary px-3 py-2 text-sm font-medium text-white transition hover:bg-secondary/90"
         >
           Ver detalhes

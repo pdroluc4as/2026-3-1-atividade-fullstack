@@ -4,6 +4,7 @@ import { PostService } from '../post/post.service.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { UpdateCommentDto } from './dto/update-comment.dto.js';
 import { CommentService } from './comment.service.js';
+import {Public} from "../auth/decorators/public.decorator.js"
 
 @Controller('comments')
 export class CommentController {
@@ -11,7 +12,8 @@ export class CommentController {
     private readonly commentService: CommentService,
     private readonly postService: PostService,
   ) {}
-
+  
+  @Public()
   @Get()
   findAll(@Query('postId') postId?: string) {
     if (postId === undefined || postId === null || postId === '') {
