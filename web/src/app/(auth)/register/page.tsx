@@ -54,7 +54,9 @@ export default function RegisterPage() {
       router.refresh();
     } catch (err) {
       const message =
-        err instanceof ApiError ? err.message : "Não foi possível criar a conta.";
+        err instanceof ApiError
+          ? err.message
+          : "Não foi possível criar a conta.";
       setError(message);
     } finally {
       setIsSubmitting(false);

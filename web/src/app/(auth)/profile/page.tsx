@@ -88,12 +88,15 @@ export default function ProfilePage() {
         window.localStorage.setItem("avatarUrl", profile.avatarUrl || "");
       } catch (err) {
         const message =
-          err instanceof ApiError ? err.message : "Não foi possível carregar o perfil.";
+          err instanceof ApiError
+            ? err.message
+            : "Não foi possível carregar o perfil.";
         setError(message);
 
         const username = window.localStorage.getItem("username") ?? "Usuário";
         const fullName = window.localStorage.getItem("fullName") ?? username;
-        const bio = window.localStorage.getItem("bio") ?? "Sem biografia definida.";
+        const bio =
+          window.localStorage.getItem("bio") ?? "Sem biografia definida.";
         const avatarUrl = window.localStorage.getItem("avatarUrl") ?? "";
 
         setUser({ username, fullName, bio, avatarUrl });
@@ -148,10 +151,15 @@ export default function ProfilePage() {
       window.localStorage.setItem("username", updatedProfile.username);
       window.localStorage.setItem("fullName", updatedProfile.fullName);
       window.localStorage.setItem("bio", updatedProfile.bio || "");
-      window.localStorage.setItem("avatarUrl", updatedProfile.avatarUrl || user.avatarUrl);
+      window.localStorage.setItem(
+        "avatarUrl",
+        updatedProfile.avatarUrl || user.avatarUrl,
+      );
     } catch (err) {
       const message =
-        err instanceof ApiError ? err.message : "Não foi possível salvar alterações.";
+        err instanceof ApiError
+          ? err.message
+          : "Não foi possível salvar alterações.";
       setError(message);
     } finally {
       setIsSaving(false);
@@ -228,7 +236,10 @@ export default function ProfilePage() {
               <input
                 value={form.fullName}
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, fullName: event.target.value }))
+                  setForm((current) => ({
+                    ...current,
+                    fullName: event.target.value,
+                  }))
                 }
                 className="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-500"
               />
@@ -241,7 +252,10 @@ export default function ProfilePage() {
               <input
                 value={form.username}
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, username: event.target.value }))
+                  setForm((current) => ({
+                    ...current,
+                    username: event.target.value,
+                  }))
                 }
                 className="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-500"
               />
@@ -254,7 +268,10 @@ export default function ProfilePage() {
               <textarea
                 value={form.bio}
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, bio: event.target.value }))
+                  setForm((current) => ({
+                    ...current,
+                    bio: event.target.value,
+                  }))
                 }
                 rows={4}
                 className="w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-500"

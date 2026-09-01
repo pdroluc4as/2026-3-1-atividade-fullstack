@@ -79,12 +79,13 @@ export default function PostDetailPage() {
       }
 
       try {
-        const [postData, commentsData, ratingsData, usersData] = await Promise.all([
-          api.get<PostItem>(`/posts/${postId}`),
-          api.get<CommentItem[]>(`/comments?postId=${postId}`),
-          api.get<RatingItem[]>(`/ratings/post/${postId}`),
-          api.get<UserItem[]>("/users"),
-        ]);
+        const [postData, commentsData, ratingsData, usersData] =
+          await Promise.all([
+            api.get<PostItem>(`/posts/${postId}`),
+            api.get<CommentItem[]>(`/comments?postId=${postId}`),
+            api.get<RatingItem[]>(`/ratings/post/${postId}`),
+            api.get<UserItem[]>("/users"),
+          ]);
 
         setPost(postData);
         setComments(commentsData);
@@ -92,7 +93,9 @@ export default function PostDetailPage() {
         setUsers(usersData);
       } catch (err) {
         const message =
-          err instanceof ApiError ? err.message : "Não foi possível carregar este post.";
+          err instanceof ApiError
+            ? err.message
+            : "Não foi possível carregar este post.";
         setError(message);
       } finally {
         setLoading(false);
@@ -107,7 +110,10 @@ export default function PostDetailPage() {
       return 0;
     }
 
-    const total = ratings.reduce((sum, item) => sum + Number(item.rating ?? 0), 0);
+    const total = ratings.reduce(
+      (sum, item) => sum + Number(item.rating ?? 0),
+      0,
+    );
     return total / ratings.length;
   }, [ratings]);
 
@@ -133,13 +139,17 @@ export default function PostDetailPage() {
         content: trimmedComment,
       });
 
-      const nextComments = await api.get<CommentItem[]>(`/comments?postId=${postId}`);
+      const nextComments = await api.get<CommentItem[]>(
+        `/comments?postId=${postId}`,
+      );
       setComments(nextComments);
       setComment("");
       setSuccess("Comentário enviado com sucesso.");
     } catch (err) {
       const message =
-        err instanceof ApiError ? err.message : "Não foi possível enviar o comentário.";
+        err instanceof ApiError
+          ? err.message
+          : "Não foi possível enviar o comentário.";
       setError(message);
     } finally {
       setSubmittingComment(false);
@@ -167,12 +177,16 @@ export default function PostDetailPage() {
         rating: Number(selectedRating),
       });
 
-      const nextRatings = await api.get<RatingItem[]>(`/ratings/post/${postId}`);
+      const nextRatings = await api.get<RatingItem[]>(
+        `/ratings/post/${postId}`,
+      );
       setRatings(nextRatings);
       setSuccess("Avaliação enviada com sucesso.");
     } catch (err) {
       const message =
-        err instanceof ApiError ? err.message : "Não foi possível enviar a avaliação.";
+        err instanceof ApiError
+          ? err.message
+          : "Não foi possível enviar a avaliação.";
       setError(message);
     } finally {
       setSubmittingRating(false);
@@ -192,12 +206,16 @@ export default function PostDetailPage() {
   if (error && !post) {
     return (
       <main className="p-8">
-        <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">{error}</div>
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+          {error}
+        </div>
       </main>
     );
   }
 
-  const author = users.find((user) => Number(user.id) === Number(post?.authorId));
+  const author = users.find(
+    (user) => Number(user.id) === Number(post?.authorId),
+  );
   const authorName = author?.username || author?.fullName || "Usuário";
 
   return (
@@ -217,29 +235,45 @@ export default function PostDetailPage() {
               <span className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">
                 Discussão
               </span>
-              <span className="text-sm text-slate-500">{formatDate(post.createdAt)}</span>
+              <span className="text-sm text-slate-500">
+                {formatDate(post.createdAt)}
+              </span>
             </div>
 
-            <h1 className="mt-5 text-3xl font-bold text-slate-900 md:text-4xl">{post.title}</h1>
-            <p className="mt-3 text-sm font-medium text-slate-600">Por {authorName}</p>
+            <h1 className="mt-5 text-3xl font-bold text-slate-900 md:text-4xl">
+              {post.title}
+            </h1>
+            <p className="mt-3 text-sm font-medium text-slate-600">
+              Por {authorName}
+            </p>
 
-            <p className="mt-6 whitespace-pre-line text-base leading-7 text-slate-700">{post.content}</p>
+            <p className="mt-6 whitespace-pre-line text-base leading-7 text-slate-700">
+              {post.content}
+            </p>
 
             <div className="mt-6 flex items-center gap-3 border-y border-slate-200 py-4 text-sm text-slate-700">
               <div className="inline-flex items-center gap-1.5">
                 <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                <span>{averageRating ? averageRating.toFixed(1) : "0.0"} / 5</span>
+                <span>
+                  {averageRating ? averageRating.toFixed(1) : "0.0"} / 5
+                </span>
               </div>
               <span>•</span>
-              <span>{ratings.length} avaliação{ratings.length === 1 ? "" : "es"}</span>
+              <span>
+                {ratings.length} avaliação{ratings.length === 1 ? "" : "es"}
+              </span>
               <span>•</span>
-              <span>{comments.length} comentário{comments.length === 1 ? "" : "s"}</span>
+              <span>
+                {comments.length} comentário{comments.length === 1 ? "" : "s"}
+              </span>
             </div>
           </article>
         ) : null}
 
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-900">Avaliar publicação</h2>
+          <h2 className="text-xl font-semibold text-slate-900">
+            Avaliar publicação
+          </h2>
 
           <div className="mt-4 flex items-center gap-2">
             {[1, 2, 3, 4, 5].map((value) => {
@@ -259,7 +293,9 @@ export default function PostDetailPage() {
                   }`}
                   aria-label={`Avaliar com ${value} estrela${value > 1 ? "s" : ""}`}
                 >
-                  <Star className={`h-5 w-5 ${isFilled ? "fill-current" : "fill-transparent"}`} />
+                  <Star
+                    className={`h-5 w-5 ${isFilled ? "fill-current" : "fill-transparent"}`}
+                  />
                 </button>
               );
             })}
@@ -300,26 +336,44 @@ export default function PostDetailPage() {
           </div>
 
           {(error || success) && (
-            <div className={`mt-4 rounded-xl border px-3 py-2 text-sm ${error ? "border-red-200 bg-red-50 text-red-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>
+            <div
+              className={`mt-4 rounded-xl border px-3 py-2 text-sm ${error ? "border-red-200 bg-red-50 text-red-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}
+            >
               {error || success}
             </div>
           )}
 
           <div className="mt-6 space-y-4">
             {comments.length === 0 ? (
-              <p className="text-sm text-slate-500">Ainda não há comentários neste post.</p>
+              <p className="text-sm text-slate-500">
+                Ainda não há comentários neste post.
+              </p>
             ) : (
               comments.map((item) => {
-                const commentAuthor = users.find((user) => Number(user.id) === Number(item.authorId));
-                const commentAuthorName = commentAuthor?.username || commentAuthor?.fullName || "Usuário";
+                const commentAuthor = users.find(
+                  (user) => Number(user.id) === Number(item.authorId),
+                );
+                const commentAuthorName =
+                  commentAuthor?.username ||
+                  commentAuthor?.fullName ||
+                  "Usuário";
 
                 return (
-                  <div key={item.id ?? `${item.authorId}-${item.createdAt}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div
+                    key={item.id ?? `${item.authorId}-${item.createdAt}`}
+                    className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                  >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-semibold text-slate-700">{commentAuthorName}</span>
-                      <span className="text-xs text-slate-400">{formatDate(item.createdAt)}</span>
+                      <span className="text-sm font-semibold text-slate-700">
+                        {commentAuthorName}
+                      </span>
+                      <span className="text-xs text-slate-400">
+                        {formatDate(item.createdAt)}
+                      </span>
                     </div>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">{item.content}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">
+                      {item.content}
+                    </p>
                   </div>
                 );
               })

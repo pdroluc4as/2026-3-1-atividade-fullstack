@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -60,7 +60,8 @@ export default function MobileMenu({ activePath }: MobileMenuProps) {
         {navItems.map((item) => {
           const currentPath = activePath ?? pathname;
           const isActive =
-            currentPath === item.href || currentPath.startsWith(`${item.href}/`);
+            currentPath === item.href ||
+            currentPath.startsWith(`${item.href}/`);
           const isProfileItem = item.href === "/profile" && isLoggedIn;
 
           return (
@@ -89,7 +90,11 @@ export default function MobileMenu({ activePath }: MobileMenuProps) {
                   <item.icon width={18} height={18} />
                 ) : null}
 
-                <span className={cn(isActive ? "text-tertiary" : "text-white/80")}>{item.label}</span>
+                <span
+                  className={cn(isActive ? "text-tertiary" : "text-white/80")}
+                >
+                  {item.label}
+                </span>
               </span>
             </Link>
           );

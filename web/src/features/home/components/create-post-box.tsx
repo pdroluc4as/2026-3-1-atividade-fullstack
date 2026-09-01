@@ -2,10 +2,12 @@
 
 import { SendHorizonal, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import api, { ApiError } from "@/shared/lib/api";
 
 export function CreatePostBox() {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -49,6 +51,7 @@ export function CreatePostBox() {
 
       setTitle("");
       setContent("");
+      router.refresh();
     } catch (err) {
       const message =
         err instanceof ApiError ? err.message : "Não foi possível publicar.";

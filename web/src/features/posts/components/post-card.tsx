@@ -1,6 +1,6 @@
-"use client"; 
+"use client";
 
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MessageSquareText, Star } from "lucide-react";
 
@@ -45,7 +45,6 @@ export function PostCard({
   ratings = [],
   averageRating,
 }: PostCardProps) {
-
   const router = useRouter();
   const postContent = content ?? description ?? "Sem conteúdo disponível.";
   const detailHref = href ?? (id ? `/posts/${id}` : "/posts");
@@ -57,15 +56,17 @@ export function PostCard({
       : typeof averageRating === "string"
         ? Number(averageRating)
         : totalRatings
-          ? ratings.reduce((sum, item) => sum + Number(item.rating ?? 0), 0) / totalRatings
+          ? ratings.reduce((sum, item) => sum + Number(item.rating ?? 0), 0) /
+            totalRatings
           : 0;
 
   function handleNavigation(event: React.MouseEvent<HTMLAnchorElement>) {
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
     if (!token) {
       event.preventDefault(); // Cancela a ida para detailHref
-      router.push("/login");  // Leva o usuário para a página de login
+      router.push("/login"); // Leva o usuário para a página de login
     }
   }
 

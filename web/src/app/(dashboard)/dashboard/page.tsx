@@ -59,10 +59,11 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadDashboardData() {
       try {
-        const [postsData, commentsData] = await Promise.all([
-          api.get<PostItem[]>("/posts"),
+        const [postsResponse, commentsData] = await Promise.all([
+          api.get<{ data: PostItem[] }>("/posts?limit=100"),
           api.get<CommentItem[]>("/comments"),
         ]);
+        const postsData = postsResponse.data;
 
         const currentUserId = getCurrentUserId();
 
@@ -76,22 +77,30 @@ export default function DashboardPage() {
 
         setPosts(
           currentUserId
-            ? postsData.filter((post) => Number(post.authorId) === Number(currentUserId))
+            ? postsData.filter(
+                (post) => Number(post.authorId) === Number(currentUserId),
+              )
             : [],
         );
         setComments(
           currentUserId
-            ? commentsData.filter((comment) => Number(comment.authorId) === Number(currentUserId))
+            ? commentsData.filter(
+                (comment) => Number(comment.authorId) === Number(currentUserId),
+              )
             : [],
         );
         setRatings(
           currentUserId
-            ? allRatings.filter((rating) => Number(rating.userId) === Number(currentUserId))
+            ? allRatings.filter(
+                (rating) => Number(rating.userId) === Number(currentUserId),
+              )
             : [],
         );
       } catch (err) {
         const message =
-          err instanceof ApiError ? err.message : "Não foi possível carregar o dashboard.";
+          err instanceof ApiError
+            ? err.message
+            : "Não foi possível carregar o dashboard.";
         setError(message);
       } finally {
         setLoading(false);
@@ -114,7 +123,9 @@ export default function DashboardPage() {
   if (error) {
     return (
       <main className="p-8">
-        <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">{error}</div>
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+          {error}
+        </div>
       </main>
     );
   }
@@ -125,21 +136,29 @@ export default function DashboardPage() {
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">
           Visão geral
         </p>
-        <h1 className="mt-2 text-3xl font-semibold text-slate-900">Dashboard</h1>
+        <h1 className="mt-2 text-3xl font-semibold text-white">
+          Dashboard
+        </h1>
       </header>
 
       <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
           <p className="text-sm text-slate-500">Posts</p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">{posts.length}</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">
+            {posts.length}
+          </p>
         </div>
         <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
           <p className="text-sm text-slate-500">Comentários</p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">{comments.length}</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">
+            {comments.length}
+          </p>
         </div>
         <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
           <p className="text-sm text-slate-500">Avaliações</p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">{ratings.length}</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">
+            {ratings.length}
+          </p>
         </div>
       </div>
     </main>

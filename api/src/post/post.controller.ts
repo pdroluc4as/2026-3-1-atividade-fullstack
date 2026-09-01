@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UnauthorizedException, ForbiddenException, Query } from '@nestjs/common';
 import type { Request } from 'express';
 import { CreatePostDto } from './dto/create-post.dto.js';
 import { UpdatePostDto } from './dto/update-post.dto.js';
@@ -11,8 +11,10 @@ export class PostController {
 
   @Public()
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const pageNumber = page ? parseInt(page, 10) : 1;
+    const limitNumber = limit ? parseInt(limit, 10) : 10;
+    return this.postService.findAll(pageNumber, limitNumber);
   }
 
   @Get(':id')

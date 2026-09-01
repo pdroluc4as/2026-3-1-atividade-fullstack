@@ -1,7 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/libsql';
-import { commentsTable, postRatingsTable, postsTable, usersTable } from './schema.js';
+import { createClient } from '@libsql/client';
+import * as schema from './schema.js';
 
 export const DRIZZLE = 'DRIZZLE';
 
@@ -90,10 +91,8 @@ const drizzleProvider = {
   useFactory: async () => {
     const url = process.env.DB_FILE_NAME ?? 'file:local.db';
 
-    const db = drizzle({
-      connection: url,
-      schema: { usersTable, postsTable, commentsTable, postRatingsTable },
-    } as any);
+    const client = createClient({ url });
+    const db = drizzle(client, { schema });
 
     await initializeDatabase(db);
     return db;

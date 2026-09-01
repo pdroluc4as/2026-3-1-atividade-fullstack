@@ -1,4 +1,4 @@
-import { defineRelations, InferSelectModel } from "drizzle-orm";
+import { relations, InferSelectModel } from "drizzle-orm";
 import { integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users_table", {
@@ -49,9 +49,9 @@ export const postRatingsTable = sqliteTable(
     rating: integer("rating").notNull(),
     createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
   },
-  (table) => [
-    uniqueIndex("post_ratings_unique_user_post").on(table.postId, table.userId),
-  ],
+  (table) => ({
+    uniqueUserPost: uniqueIndex("post_ratings_unique_user_post").on(table.postId, table.userId),
+  }),
 );
 
 export type User = InferSelectModel<typeof usersTable>;
@@ -59,69 +59,45 @@ export type Post = InferSelectModel<typeof postsTable>;
 export type Comment = InferSelectModel<typeof commentsTable>;
 export type PostRating = InferSelectModel<typeof postRatingsTable>;
 
-const relations = defineRelations(
-  { usersTable, postsTable, commentsTable, postRatingsTable },
-  (helpers) => ({
-    usersTable: {
-      posts: helpers.many.postsTable({
-        from: [helpers.usersTable.id],
-        to: [helpers.postsTable.authorId],
-      }),
-      comments: helpers.many.commentsTable({
-        from: [helpers.usersTable.id],
-        to: [helpers.commentsTable.authorId],
-      }),
-      postRatings: helpers.many.postRatingsTable({
-        from: [helpers.usersTable.id],
-        to: [helpers.postRatingsTable.userId],
-      }),
-    },
-    postsTable: {
-      author: helpers.one.usersTable({
-        from: [helpers.postsTable.authorId],
-        to: [helpers.usersTable.id],
-      }),
-      comments: helpers.many.commentsTable({
-        from: [helpers.postsTable.id],
-        to: [helpers.commentsTable.postId],
-      }),
-      ratings: helpers.many.postRatingsTable({
-        from: [helpers.postsTable.id],
-        to: [helpers.postRatingsTable.postId],
-      }),
-    },
-    commentsTable: {
-      post: helpers.one.postsTable({
-        from: [helpers.commentsTable.postId],
-        to: [helpers.postsTable.id],
-      }),
-      author: helpers.one.usersTable({
-        from: [helpers.commentsTable.authorId],
-        to: [helpers.usersTable.id],
-      }),
-      parentComment: helpers.one.commentsTable({
-        from: [helpers.commentsTable.parentCommentId],
-        to: [helpers.commentsTable.id],
-      }),
-      replies: helpers.many.commentsTable({
-        from: [helpers.commentsTable.id],
-        to: [helpers.commentsTable.parentCommentId],
-      }),
-    },
-    postRatingsTable: {
-      post: helpers.one.postsTable({
-        from: [helpers.postRatingsTable.postId],
-        to: [helpers.postsTable.id],
-      }),
-      user: helpers.one.usersTable({
-        from: [helpers.postRatingsTable.userId],
-        to: [helpers.usersTable.id],
-      }),
-    },
-  }),
-);
+export const usersRelations = relations(usersTable, (helpers: any) => ({
+  posts: helpers.many(postsTable),
+  comments: helpers.many(commentsTable),
+  postRatings: helpers.many(postRatingsTable),
+}));
 
-export const usersRelations = relations;
-export const postsRelations = relations;
-export const commentsRelations = relations;
-export const postRatingsRelations = relations;
+export const postsRelations = relations(postsTable, (helpers: any) => ({
+  author: helpers.one(usersTable, {
+    fields: [postsTable.authorId],
+    references: [usersTable.id],
+  }),
+  comments: helpers.many(commentsTable),
+  ratings: helpers.many(postRatingsTable),
+}));
+
+export const commentsRelations = relations(commentsTable, (helpers: any) => ({
+  post: helpers.one(postsTable, {
+    fields: [commentsTable.postId],
+    references: [postsTable.id],
+  }),
+  author: helpers.one(usersTable, {
+    fields: [commentsTable.authorId],
+    references: [usersTable.id],
+  }),
+  parentComment: helpers.one(commentsTable, {
+    fields: [commentsTable.parentCommentId],
+    references: [commentsTable.id],
+    relationName: "parent_child_comments",
+  }),
+  replies: helpers.many(commentsTable, { relationName: "parent_child_comments" }),
+}));
+
+export const postRatingsRelations = relations(postRatingsTable, (helpers: any) => ({
+  post: helpers.one(postsTable, {
+    fields: [postRatingsTable.postId],
+    references: [postsTable.id],
+  }),
+  user: helpers.one(usersTable, {
+    fields: [postRatingsTable.userId],
+    references: [usersTable.id],
+  }),
+}));
