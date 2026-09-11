@@ -113,6 +113,11 @@ export default function PostsPage() {
         "Você"
       : "Você";
 
+  const authorAvatarUrl =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("avatarUrl") || undefined
+      : undefined;
+
   if (loading) {
     return (
       <main className="p-8">
@@ -166,6 +171,8 @@ export default function PostsPage() {
                 content={post.content}
                 description={post.content}
                 author={authorName}
+                authorId={post.authorId}
+                authorAvatarUrl={authorAvatarUrl}
                 date={formatDate(post.createdAt)}
                 category="Meu conteúdo"
                 comments={post.comments ?? []}

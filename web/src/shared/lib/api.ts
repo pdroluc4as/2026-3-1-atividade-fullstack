@@ -70,6 +70,12 @@ async function request<T>(
       message = response.statusText || message; //[cite: 2]
     }
 
+    if (response.status === 401 && typeof window !== "undefined") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("avatarUrl");
+      window.location.href = "/login";
+    }
+
     throw new ApiError(message, response.status); //[cite: 2]
   }
 

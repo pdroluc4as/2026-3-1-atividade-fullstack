@@ -31,10 +31,12 @@ export default function Sidebar() {
 
     window.addEventListener("storage", handleStorage);
     window.addEventListener("focus", syncAuthState);
+    window.addEventListener("auth-change", syncAuthState);
 
     return () => {
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener("focus", syncAuthState);
+      window.removeEventListener("auth-change", syncAuthState);
     };
   }, []);
 

@@ -24,6 +24,8 @@ type PostCardProps = {
   description?: string;
   content?: string;
   author?: string;
+  authorId?: number;
+  authorAvatarUrl?: string;
   date?: string;
   category?: string;
   href?: string;
@@ -38,6 +40,8 @@ export function PostCard({
   description,
   content,
   author = "Equipe",
+  authorId,
+  authorAvatarUrl,
   date = "Hoje",
   category = "Geral",
   href,
@@ -60,6 +64,9 @@ export function PostCard({
             totalRatings
           : 0;
 
+  const authorInitial = (author ?? "U").charAt(0).toUpperCase();
+  const profileHref = authorId ? `/profile/${authorId}` : null;
+
   function handleNavigation(event: React.MouseEvent<HTMLAnchorElement>) {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -68,6 +75,18 @@ export function PostCard({
       event.preventDefault(); // Cancela a ida para detailHref
       router.push("/login"); // Leva o usuário para a página de login
     }
+  }
+
+  function handleAuthorClick(event: React.MouseEvent<HTMLElement>) {
+    event.stopPropagation();
+    if (!profileHref) return;
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+    router.push(profileHref);
   }
 
   return (
@@ -103,7 +122,25 @@ export function PostCard({
       </div>
 
       <div className="mt-5 flex items-center justify-between gap-3">
-        <span className="text-sm font-medium text-slate-700">Por {author}</span>
+        <button
+          type="button"
+          onClick={handleAuthorClick}
+          title={profileHref ? `Ver perfil de ${author}` : undefined}
+          className={`flex items-center gap-2 text-sm font-medium text-slate-700 ${profileHref ? "cursor-pointer hover:text-primary transition-colors" : "cursor-default"}`}
+        >
+          {authorAvatarUrl ? (
+            <img
+              src={authorAvatarUrl}
+              alt={`Avatar de ${author}`}
+              className="h-7 w-7 rounded-full object-cover border border-slate-200"
+            />
+          ) : (
+            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-600">
+              {authorInitial}
+            </span>
+          )}
+          <span>{author}</span>
+        </button>
 
         <Link
           href={detailHref}

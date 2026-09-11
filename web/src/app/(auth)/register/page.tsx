@@ -50,6 +50,8 @@ export default function RegisterPage() {
         localStorage.setItem("avatarUrl", response.avatarUrl);
       }
 
+      window.dispatchEvent(new Event("auth-change"));
+
       router.push("/");
       router.refresh();
     } catch (err) {

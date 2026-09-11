@@ -42,6 +42,8 @@ export default function ProfilePage() {
     localStorage.removeItem("bio");
     localStorage.removeItem("avatarUrl");
 
+    window.dispatchEvent(new Event("auth-change"));
+
     router.replace("/login");
   }
 
@@ -155,6 +157,8 @@ export default function ProfilePage() {
         "avatarUrl",
         updatedProfile.avatarUrl || user.avatarUrl,
       );
+
+      window.dispatchEvent(new Event("auth-change"));
     } catch (err) {
       const message =
         err instanceof ApiError
