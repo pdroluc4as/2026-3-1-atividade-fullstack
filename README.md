@@ -14,7 +14,9 @@
 Pedro Lucas Oliveira de Sousa  
 [github](https://github.com/pdroluc4as)
 
+
 ## Relato da atividade
+Atividade feita utilizando IA vibe coding, foi rapido de fazer mas acredito que o sistema necessita de melhorias. Passei grande parte do tempo resolvendo bugs também.
 
 ### Componentes e tecnologias
 
